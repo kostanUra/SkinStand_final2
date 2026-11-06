@@ -1,18 +1,16 @@
-name: ScinStand
-description: 3D Skin Creator Game
-publish_to: 'none'
-version: 1.0.0+1
-
-environment:
-  sdk: '>=3.0.0 <4.0.0'
-
-dependencies:
-  flutter:
-    sdk: flutter
-  interactive_3d: ^2.2.0
-
-flutter:
-  uses-material-design: true
-  assets:
-    - assets/
-    - assets/tags
+workflows:
+  android-build:
+    name: Android APK Build
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    environment:
+      flutter: stable
+    scripts:
+      - name: Generate Android project files
+        script: flutter create . --project-name=scin_stand --platforms=android
+      - name: Get dependencies
+        script: flutter pub get
+      - name: Build APK
+        script: flutter build apk --debug
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
