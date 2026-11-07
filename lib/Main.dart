@@ -89,7 +89,6 @@ class _CreatorScreenState extends State<CreatorScreen> {
     'assets/usp.glb',
     'assets/val.glb',
   ];
-  ];
 
   late String _currentModel;
 
