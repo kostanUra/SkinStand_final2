@@ -1,0 +1,18 @@
+name: scin_stand
+description: 3D Skin Creator
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  interactive_3d: ^2.2.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/tags/
