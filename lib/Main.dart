@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle; 
+import 'dart:typed_data'; // <-- ДОБАВЛЕН ИМПОРТ ДЛЯ ByteData и Uint8List
 import 'package:interactive_3d/interactive_3d.dart';
 
 void main() {
@@ -38,7 +39,6 @@ class _CreatorScreenState extends State<CreatorScreen> {
   final Interactive3dController _controller = Interactive3dController();
   final TextEditingController _tagController = TextEditingController(); 
 
-  // 👇 СПИСОК ТВОИХ МОДЕЛЕЙ (проверь точные названия файлов)
   final List<String> allModels = [
     'assets/akr.glb',
     'assets/deagle.glb',
@@ -88,6 +88,7 @@ class _CreatorScreenState extends State<CreatorScreen> {
     'assets/usp.glb',
     'assets/val.glb',
   ];
+  ];
 
   late String _currentModel;
 
@@ -97,31 +98,25 @@ class _CreatorScreenState extends State<CreatorScreen> {
     _currentModel = allModels.first;
   }
 
-  // --- МОЗГ ИГРЫ: Поиск картинки по тегу (.jpg или .png) ---
   Future<void> applyTag(String tag) async {
     String cleanTag = tag.trim().toLowerCase();
     if (cleanTag.isEmpty) return;
 
     ByteData? imageData;
 
-    // 1. Пытаемся загрузить JPG
     try {
       imageData = await rootBundle.load('assets/tags/$cleanTag.jpg');
     } catch (e) {
-      // 2. Если JPG нет, пытаемся загрузить PNG
       try {
         imageData = await rootBundle.load('assets/tags/$cleanTag.png');
-      } catch (e) {
-        // Если ни того, ни другого нет
-      }
+      } catch (e) {}
     }
 
     if (imageData != null) {
       Uint8List bytes = imageData.buffer.asUint8List();
       
-      // ⚠️ ВАЖНО: 'Material' — это имя материала внутри твоей 3D-модели.
-      // Если текстура не применяется, попробуй поменять 'Material' на 'DefaultMaterial' или 'Base'.
-      _controller.setEntityTexture('Material', bytes);
+      // ИСПРАВЛЕНО: теперь аргументы передаются по имени (name и bytes)
+      _controller.setEntityTexture(name: 'Material', bytes: bytes);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -131,7 +126,7 @@ class _CreatorScreenState extends State<CreatorScreen> {
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Картинка для тега "$cleanTag" не найдена (нужен .jpg или .png)'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Картинка для тега "$cleanTag" не найдена!'), backgroundColor: Colors.red),
         );
       }
     }
@@ -146,7 +141,6 @@ class _CreatorScreenState extends State<CreatorScreen> {
       ),
       body: Column(
         children: [
-          // 3D-Вьювер
           Expanded(
             flex: 3,
             child: Container(
@@ -158,17 +152,14 @@ class _CreatorScreenState extends State<CreatorScreen> {
               ),
             ),
           ),
-
-          // Панель инструментов
           Container(
             padding: const EdgeInsets.all(16.0),
             decoration: const BoxDecoration(
               color: Color(0xFF222222),
               border: Border(top: BorderSide(color: Colors.black54, width: 2)),
-              ),
+            ),
             child: Column(
               children: [
-                // Выпадающий список оружия
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
@@ -196,10 +187,7 @@ class _CreatorScreenState extends State<CreatorScreen> {
                     },
                   ),
                 ),
-                
                 const SizedBox(height: 10),
-
-                // Поле ввода тега и кнопка "Применить"
                 Row(
                   children: [
                     Expanded(
@@ -231,24 +219,21 @@ class _CreatorScreenState extends State<CreatorScreen> {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         ),
                         onPressed: () {
-                          applyTag(_tagController.text); // Вызов мозга игры
+                          applyTag(_tagController.text);
                         },
                         child: const Text('ТЕГ', style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ],
                 ),
-                
                 const SizedBox(height: 10),
-
-                // Кнопка "Выложить"
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange, 
                     foregroundColor: Colors.black,
                     minimumSize: const Size.fromHeight(55),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    ),
+                  ),
                   onPressed: () {
                      ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Скин сохранен!', style: TextStyle(color: Colors.white)), backgroundColor: Colors.orange),
@@ -264,3 +249,4 @@ class _CreatorScreenState extends State<CreatorScreen> {
     );
   }
 }
+                    
