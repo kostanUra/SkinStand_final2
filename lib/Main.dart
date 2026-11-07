@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle; 
-import 'dart:typed_data'; // <-- ДОБАВЛЕН ИМПОРТ ДЛЯ ByteData и Uint8List
+import 'dart:typed_data';
 import 'package:interactive_3d/interactive_3d.dart';
 
 void main() {
@@ -39,6 +39,7 @@ class _CreatorScreenState extends State<CreatorScreen> {
   final Interactive3dController _controller = Interactive3dController();
   final TextEditingController _tagController = TextEditingController(); 
 
+  // ВНИМАТЕЛЬНО ПРОВЕРЬ ЭТОТ СПИСОК. Каждая строка в кавычках и с запятой на конце!
   final List<String> allModels = [
     'assets/akr.glb',
     'assets/deagle.glb',
@@ -115,7 +116,6 @@ class _CreatorScreenState extends State<CreatorScreen> {
     if (imageData != null) {
       Uint8List bytes = imageData.buffer.asUint8List();
       
-      // ИСПРАВЛЕНО: теперь аргументы передаются по имени (name и bytes)
       _controller.setEntityTexture(name: 'Material', bytes: bytes);
 
       if (mounted) {
@@ -166,7 +166,7 @@ class _CreatorScreenState extends State<CreatorScreen> {
                     color: const Color(0xFF333333),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: Colors.grey.shade700),
-                  ),
+                    ),
                   child: DropdownButton<String>(
                     value: _currentModel,
                     isExpanded: true,
