@@ -7,7 +7,7 @@ workflows:
       flutter: stable
     scripts:
       - name: Generate Android project files
-        script: flutter create . --project-name=scin_stand --platforms=android
+        script: flutter create . --project-name=skinstand --platforms=android
       - name: Get dependencies
         script: flutter pub get
       - name: Build APK
