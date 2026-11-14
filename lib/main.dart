@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle; 
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'dart:convert';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '3D Skin Creator',
-      debugShowCheckedModeBanner: false, 
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color(0xFF121212),
         appBarTheme: const AppBarTheme(
@@ -40,11 +41,11 @@ class CreatorScreen extends StatefulWidget {
 
 class _CreatorScreenState extends State<CreatorScreen> {
   final Interactive3dController _controller = Interactive3dController();
-  final TextEditingController _tagController = TextEditingController(); 
+  final TextEditingController _tagController = TextEditingController();
   final GlobalKey _repaintKey = GlobalKey(); // Для скриншота
 
   final List<String> allModels = [
-   'assets/akr.glb',
+    'assets/akr.glb',
     'assets/deagle.glb',
     'assets/dualdaggers.glb',
     'assets/fabm.glb',
@@ -63,7 +64,6 @@ class _CreatorScreenState extends State<CreatorScreen> {
     'assets/fang.glb',
     'assets/fnfal.glb',
     'assets/fs.glb',
-    'assets/g22.glb',
     'assets/kukri.glb',
     'assets/kunai.glb',
     'assets/m4a1.glb',
@@ -91,7 +91,6 @@ class _CreatorScreenState extends State<CreatorScreen> {
     'assets/ump45.glb',
     'assets/usp.glb',
     'assets/val.glb',
-  ];
   ];
 
   late String _currentModel;
@@ -121,10 +120,10 @@ class _CreatorScreenState extends State<CreatorScreen> {
 
     if (imageData != null) {
       Uint8List bytes = imageData.buffer.asUint8List();
-      
+
       // ВАЖНО: Если теги не применяются, значит материал в твоих .glb файлах называется не 'Material'
       // Попробуй поменять 'Material' на 'DefaultMaterial', 'Base' или 'Mat'
-      _controller.setEntityTexture(name: 'Material', bytes: bytes);
+      await _controller.setEntityTexture(name: 'Material', bytes: bytes);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -159,7 +158,7 @@ class _CreatorScreenState extends State<CreatorScreen> {
       final image = await boundary.toImage(pixelRatio: 2.0);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       final bytes = byteData!.buffer.asUint8List();
-      
+
       // Переводим в Base64 строку для сохранения
       String base64Image = base64Encode(bytes);
       // Сохраняем в память телефона
@@ -174,7 +173,7 @@ class _CreatorScreenState extends State<CreatorScreen> {
         );
       }
     } catch (e) {
-      print(e);
+      debugPrint('$e');
     }
   }
 
@@ -204,7 +203,7 @@ class _CreatorScreenState extends State<CreatorScreen> {
               child: Container(
                 color: Colors.white,
                 child: Interactive3d(
-                  key: ValueKey(_currentModel), 
+                  key: ValueKey(_currentModel),
                   controller: _controller,
                   modelPath: _currentModel,
                 ),
@@ -227,7 +226,7 @@ class _CreatorScreenState extends State<CreatorScreen> {
                     value: _currentModel,
                     isExpanded: true,
                     dropdownColor: const Color(0xFF333333),
-                    underline: const SizedBox(), 
+                    underline: const SizedBox(),
                     icon: const Icon(Icons.arrow_drop_down, color: Colors.orange),
                     items: allModels.map((String modelPath) {
                       String displayName = modelPath.replaceAll('assets/', '').replaceAll('.glb', '').toUpperCase();
@@ -244,7 +243,7 @@ class _CreatorScreenState extends State<CreatorScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                
+
                 // Теги
                 Row(
                   children: [
@@ -261,7 +260,7 @@ class _CreatorScreenState extends State<CreatorScreen> {
                           contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
                         ),
-                        ),
+                      ),
                     ),
                     const SizedBox(width: 8),
                     ElevatedButton(
@@ -279,11 +278,11 @@ class _CreatorScreenState extends State<CreatorScreen> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                
+
                 // Кнопка сохранения
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange, 
+                    backgroundColor: Colors.orange,
                     foregroundColor: Colors.black,
                     minimumSize: const Size.fromHeight(50),
                   ),
@@ -317,6 +316,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   Future<void> _loadSkins() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (!mounted) return;
     setState(() {
       _skins = prefs.getStringList('my_skins') ?? [];
     });
@@ -326,27 +326,27 @@ class _GalleryScreenState extends State<GalleryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('МОИ СКИНЫ')),
-      body: _skins.isEmpty 
-        ? const Center(child: Text('Галерея пуста. Создай первый скин!', style: TextStyle(color: Colors.grey)))
-        : GridView.builder(
-            padding: const EdgeInsets.all(10),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
+      body: _skins.isEmpty
+          ? const Center(child: Text('Галерея пуста. Создай первый скин!', style: TextStyle(color: Colors.grey)))
+          : GridView.builder(
+              padding: const EdgeInsets.all(10),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+              ),
+              itemCount: _skins.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.orange, width: 2),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                  ),
+                  child: Image.memory(base64Decode(_skins[index]), fit: BoxFit.contain),
+                );
+              },
             ),
-            itemCount: _skins.length,
-            itemBuilder: (context, index) {
-              return Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.orange, width: 2),
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                ),
-                child: Image.memory(base64Decode(_skins[index]), fit: BoxFit.contain),
-              );
-            },
-          ),
     );
   }
 }
@@ -370,15 +370,16 @@ class _DrawingPadState extends State<DrawingPad> {
       RenderRepaintBoundary boundary = _canvasKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       ui.Image image = await boundary.toImage(pixelRatio: 1.0);
       ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-      
+
       if (byteData != null) {
         widget.onSave(byteData.buffer.asUint8List());
         Navigator.pop(context); // Закрываем холст
       }
     } catch (e) {
-      print(e);
+      debugPrint('$e');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -397,9 +398,9 @@ class _DrawingPadState extends State<DrawingPad> {
                 color: Colors.white, // Белый фон для текстуры
                 child: GestureDetector(
                   onPanUpdate: (details) {
+                    final RenderBox canvas = _canvasKey.currentContext!.findRenderObject() as RenderBox;
                     setState(() {
-                      RenderBox renderBox = context.findRenderObject() as RenderBox;
-                      _points.add(renderBox.globalToLocal(details.globalPosition));
+                      _points.add(canvas.globalToLocal(details.globalPosition));
                     });
                   },
                   onPanEnd: (details) => setState(() => _points.add(Offset.zero)),
@@ -421,21 +422,25 @@ class _DrawingPadState extends State<DrawingPad> {
                   GestureDetector(
                     onTap: () => setState(() => _brushColor = color),
                     child: Container(
-                      width: 40, height: 40,
+                      width: 40,
+                      height: 40,
                       decoration: BoxDecoration(
-                        color: color, 
+                        color: color,
                         shape: BoxShape.circle,
-                        border: Border.all(color: _brushColor == color ? Colors.white : Colors.transparent, width: 3)
+                        border: Border.all(
+                          color: _brushColor == color ? Colors.white : Colors.transparent,
+                          width: 3,
+                        ),
                       ),
                     ),
                   ),
                 IconButton(
                   icon: const Icon(Icons.clear, color: Colors.white),
                   onPressed: () => setState(() => _points.clear()),
-                )
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
@@ -462,6 +467,5 @@ class SignaturePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(SignaturePainter oldDelegate) => oldDelegate.points != points;
+  bool shouldRepaint(SignaturePainter oldDelegate) => true;
 }
-                    
