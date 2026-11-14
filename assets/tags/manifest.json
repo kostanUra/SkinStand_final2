@@ -1,0 +1,198 @@
+{
+  "version": 1,
+  "generatedBy": "tool/generate_textures.py",
+  "tags": [
+    {
+      "id": "carbon",
+      "name": "Carbon",
+      "accent": "#3A3A3A",
+      "texture": "assets/textures/carbon.jpg",
+      "preview": "assets/tags/carbon.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "chameleon",
+      "name": "Chameleon",
+      "accent": "#4FC3A1",
+      "texture": "assets/textures/chameleon.jpg",
+      "preview": "assets/tags/chameleon.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "daybreak",
+      "name": "Daybreak",
+      "accent": "#F5A623",
+      "texture": "assets/textures/daybreak.jpg",
+      "preview": "assets/tags/daybreak.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "digital-burst",
+      "name": "Digital Burst",
+      "accent": "#C05CFF",
+      "texture": "assets/textures/digital-burst.jpg",
+      "preview": "assets/tags/digital burst.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "dust-devil",
+      "name": "Dust Devil",
+      "accent": "#C9A227",
+      "texture": "assets/textures/dust-devil.jpg",
+      "preview": "assets/tags/dust devil.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "fury",
+      "name": "Fury",
+      "accent": "#E53935",
+      "texture": "assets/textures/fury.jpg",
+      "preview": "assets/tags/fury.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "geometric",
+      "name": "Geometric",
+      "accent": "#3F8CFF",
+      "texture": "assets/textures/geometric.jpg",
+      "preview": "assets/tags/geometric.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "haunt",
+      "name": "Haunt",
+      "accent": "#9FD4D0",
+      "texture": "assets/textures/haunt.jpg",
+      "preview": "assets/tags/haunt.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "hunter",
+      "name": "Hunter",
+      "accent": "#6B7A3A",
+      "texture": "assets/textures/hunter.jpg",
+      "preview": "assets/tags/hunter.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "lich",
+      "name": "Lich",
+      "accent": "#2BB3A3",
+      "texture": "assets/textures/lich.jpg",
+      "preview": "assets/tags/lich.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "monster",
+      "name": "Monster",
+      "accent": "#5DBB3F",
+      "texture": "assets/textures/monster.jpg",
+      "preview": "assets/tags/monster.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "nebula",
+      "name": "Nebula",
+      "accent": "#8A6CFF",
+      "texture": "assets/textures/nebula.jpg",
+      "preview": "assets/tags/nebula.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "necromancer",
+      "name": "Necromancer",
+      "accent": "#7B3FA0",
+      "texture": "assets/textures/necromancer.jpg",
+      "preview": "assets/tags/necromancer.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "noxious",
+      "name": "Noxious",
+      "accent": "#B6D62C",
+      "texture": "assets/textures/noxious.jpg",
+      "preview": "assets/tags/noxious.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "poison",
+      "name": "Poison",
+      "accent": "#39C24A",
+      "texture": "assets/textures/poison.jpg",
+      "preview": "assets/tags/poison.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "radiation",
+      "name": "Radiation",
+      "accent": "#F2E205",
+      "texture": "assets/textures/radiation.jpg",
+      "preview": "assets/tags/radiation.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "samurai",
+      "name": "Samurai",
+      "accent": "#D62828",
+      "texture": "assets/textures/samurai.jpg",
+      "preview": "assets/tags/samurai.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "scratch",
+      "name": "Scratch",
+      "accent": "#9AA0A6",
+      "texture": "assets/textures/scratch.jpg",
+      "preview": "assets/tags/scratch.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "sport-v2",
+      "name": "Sport V2",
+      "accent": "#2F6BFF",
+      "texture": "assets/textures/sport-v2.jpg",
+      "preview": "assets/tags/sport v2.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "stone-cold",
+      "name": "Stone Cold",
+      "accent": "#8C8C8C",
+      "texture": "assets/textures/stone-cold.jpg",
+      "preview": "assets/tags/stone cold.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "thorn",
+      "name": "Thorn",
+      "accent": "#8E1B2C",
+      "texture": "assets/textures/thorn.jpg",
+      "preview": "assets/tags/thorn.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "tiger",
+      "name": "Tiger",
+      "accent": "#F08C1A",
+      "texture": "assets/textures/tiger.jpg",
+      "preview": "assets/tags/tiger.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "venom",
+      "name": "Venom",
+      "accent": "#7BD32F",
+      "texture": "assets/textures/venom.jpg",
+      "preview": "assets/tags/venom.jpg",
+      "previewAvailable": true
+    },
+    {
+      "id": "winter-sport",
+      "name": "Winter Sport",
+      "accent": "#8CC8FF",
+      "texture": "assets/textures/winter-sport.jpg",
+      "preview": "assets/tags/winter sport.jpg",
+      "previewAvailable": true
+    }
+  ]
+}

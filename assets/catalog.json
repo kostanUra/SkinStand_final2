@@ -1,0 +1,496 @@
+{
+  "version": 1,
+  "generatedBy": "tool/generate_catalog.py",
+  "models": [
+    {
+      "id": "akr",
+      "name": "AKR",
+      "category": "Автоматы",
+      "glb": "assets/akr.glb",
+      "bodyEntities": [
+        "Gunlock1",
+        "Magazine1",
+        "LOD_Template"
+      ]
+    },
+    {
+      "id": "akr12",
+      "name": "AKR-12",
+      "category": "Автоматы",
+      "glb": "assets/akr12.glb",
+      "bodyEntities": [
+        "Gunlock1",
+        "Magazine1",
+        "Sight",
+        "LOD_Template"
+      ]
+    },
+    {
+      "id": "fs",
+      "name": "F/S",
+      "category": "Автоматы",
+      "glb": "assets/fs.glb",
+      "bodyEntities": [
+        "Gunlock1",
+        "Magazine1",
+        "LOD_Template"
+      ]
+    },
+    {
+      "id": "fabm",
+      "name": "FABM",
+      "category": "Автоматы",
+      "glb": "assets/fabm.glb",
+      "bodyEntities": [
+        "Gunlock1",
+        "Handle1",
+        "Magazine2",
+        "LOD_Template"
+      ]
+    },
+    {
+      "id": "famas",
+      "name": "FAMAS",
+      "category": "Автоматы",
+      "glb": "assets/famas.glb",
+      "bodyEntities": [
+        "Gunlock1",
+        "Magazine1",
+        "LOD_Template"
+      ]
+    },
+    {
+      "id": "fnfal",
+      "name": "FN FAL",
+      "category": "Автоматы",
+      "glb": "assets/fnfal.glb",
+      "bodyEntities": [
+        "Gunlock1",
+        "Magazine1",
+        "LOD_Template"
+      ]
+    },
+    {
+      "id": "m16",
+      "name": "M16",
+      "category": "Автоматы",
+      "glb": "assets/m16.glb",
+      "bodyEntities": [
+        "Gunlock1.001",
+        "Magazine1.001",
+        "Sight",
+        "LOD_Template.001"
+      ]
+    },
+    {
+      "id": "m4a1",
+      "name": "M4A1",
+      "category": "Автоматы",
+      "glb": "assets/m4a1.glb",
+      "bodyEntities": [
+        "Gunlock1",
+        "Magazine1",
+        "LOD_Template"
+      ]
+    },
+    {
+      "id": "val",
+      "name": "VAL",
+      "category": "Автоматы",
+      "glb": "assets/val.glb",
+      "bodyEntities": [
+        "Gunlock1.001",
+        "Magazine1.001",
+        "LOD_Template.001"
+      ]
+    },
+    {
+      "id": "akimbouzi",
+      "name": "Akimbouzi",
+      "category": "Пистолеты",
+      "glb": "assets/akimbouzi.glb",
+      "bodyEntities": [
+        "Gunlock1",
+        "Gunlock2",
+        "Handle1",
+        "Handle2",
+        "Magazine1",
+        "Magazine2"
+      ]
+    },
+    {
+      "id": "deagle",
+      "name": "Desert Eagle",
+      "category": "Пистолеты",
+      "glb": "assets/deagle.glb",
+      "bodyEntities": [
+        "Gunlock1",
+        "Magazine1",
+        "LOD_Template"
+      ]
+    },
+    {
+      "id": "berettas",
+      "name": "Dual Berettas",
+      "category": "Пистолеты",
+      "glb": "assets/berettas.glb",
+      "bodyEntities": [
+        "Gunlock1",
+        "Gunlock2",
+        "Handle1",
+        "Handle2",
+        "Magazine1",
+        "Magazine2"
+      ]
+    },
+    {
+      "id": "g22",
+      "name": "G22",
+      "category": "Пистолеты",
+      "glb": "assets/g22.glb",
+      "bodyEntities": [
+        "Gunlock1",
+        "Magazine1",
+        "LOD_Template"
+      ]
+    },
+    {
+      "id": "mallard",
+      "name": "Mallard",
+      "category": "Пистолеты",
+      "glb": "assets/mallard.glb",
+      "bodyEntities": [
+        "Gunlock1.001",
+        "Handle1",
+        "Handle2",
+        "Magazine1.001",
+        "Lod_Template.001"
+      ]
+    },
+    {
+      "id": "p350",
+      "name": "P350",
+      "category": "Пистолеты",
+      "glb": "assets/p350.glb",
+      "bodyEntities": [
+        "Gunlock1.001",
+        "Magazine1.001",
+        "Magazine2",
+        "LOD_Template.001"
+      ]
+    },
+    {
+      "id": "tec9",
+      "name": "TEC-9",
+      "category": "Пистолеты",
+      "glb": "assets/tec9.glb",
+      "bodyEntities": [
+        "Gunlock1.001",
+        "Magazine1.001",
+        "LOD_Template.001"
+      ]
+    },
+    {
+      "id": "usp",
+      "name": "USP",
+      "category": "Пистолеты",
+      "glb": "assets/usp.glb",
+      "bodyEntities": [
+        "Gunlock1.001",
+        "Magazine1.001",
+        "LOD_Template.001"
+      ]
+    },
+    {
+      "id": "mac10",
+      "name": "MAC-10",
+      "category": "ПП",
+      "glb": "assets/mac10.glb",
+      "bodyEntities": [
+        "Gunlock1.001",
+        "Handle1",
+        "Handle2",
+        "Magazine1.001",
+        "LOD_Template.001"
+      ]
+    },
+    {
+      "id": "mp5",
+      "name": "MP5",
+      "category": "ПП",
+      "glb": "assets/mp5.glb",
+      "bodyEntities": [
+        "Gunlock1.001",
+        "Magazine1.001",
+        "LOD_Template.001"
+      ]
+    },
+    {
+      "id": "mp7",
+      "name": "MP7",
+      "category": "ПП",
+      "glb": "assets/mp7.glb",
+      "bodyEntities": [
+        "Gunlock1.001",
+        "Magazine1.001",
+        "LOD_Template.001"
+      ]
+    },
+    {
+      "id": "p90",
+      "name": "P90",
+      "category": "ПП",
+      "glb": "assets/p90.glb",
+      "bodyEntities": [
+        "Gunlock1.001",
+        "Magazine1.001",
+        "LOD_Template.001"
+      ]
+    },
+    {
+      "id": "ump45",
+      "name": "UMP-45",
+      "category": "ПП",
+      "glb": "assets/ump45.glb",
+      "bodyEntities": [
+        "Gunlock1.001",
+        "Magazine2",
+        "LOD_Template.001"
+      ]
+    },
+    {
+      "id": "awm",
+      "name": "AWM",
+      "category": "Снайперские",
+      "glb": "assets/awm.glb",
+      "bodyEntities": [
+        "Gunlock1",
+        "Gunlock2",
+        "Magazine1",
+        "LOD_Template"
+      ]
+    },
+    {
+      "id": "m110",
+      "name": "M110",
+      "category": "Снайперские",
+      "glb": "assets/m110.glb",
+      "bodyEntities": [
+        "Gunlock1.001",
+        "Magazine1.001",
+        "LOD_Template.001"
+      ]
+    },
+    {
+      "id": "m40",
+      "name": "M40",
+      "category": "Снайперские",
+      "glb": "assets/m40.glb",
+      "bodyEntities": [
+        "Gunlock1",
+        "Magazine1",
+        "LOD_Template"
+      ]
+    },
+    {
+      "id": "sm1014",
+      "name": "SM1014",
+      "category": "Дробовики",
+      "glb": "assets/sm1014.glb",
+      "bodyEntities": [
+        "Gunlock1.002",
+        "LOD_Template.001"
+      ]
+    },
+    {
+      "id": "spas",
+      "name": "SPAS-12",
+      "category": "Дробовики",
+      "glb": "assets/spas.glb",
+      "bodyEntities": [
+        "Gunlock1.001",
+        "Gunlock2",
+        "Magazine3",
+        "LOD_Template.001"
+      ]
+    },
+    {
+      "id": "m60",
+      "name": "M60",
+      "category": "Пулемёты",
+      "glb": "assets/m60.glb",
+      "bodyEntities": [
+        "Gunlock1.001",
+        "Gunlock2",
+        "Magazine1.001",
+        "Sight",
+        "LOD_Template.001"
+      ]
+    },
+    {
+      "id": "butterfly",
+      "name": "Butterfly Knife",
+      "category": "Ножи",
+      "glb": "assets/butterfly.glb",
+      "bodyEntities": [
+        "Butterfly"
+      ]
+    },
+    {
+      "id": "dualdaggers",
+      "name": "Dual Daggers",
+      "category": "Ножи",
+      "glb": "assets/dualdaggers.glb",
+      "bodyEntities": [
+        "L0_LOD0_R"
+      ]
+    },
+    {
+      "id": "fang",
+      "name": "Fang",
+      "category": "Ножи",
+      "glb": "assets/fang.glb",
+      "bodyEntities": [
+        "Fang_1"
+      ]
+    },
+    {
+      "id": "flip",
+      "name": "Flip Knife",
+      "category": "Ножи",
+      "glb": "assets/flip.glb",
+      "bodyEntities": [
+        "Blade1",
+        "L0_LOD0_14"
+      ]
+    },
+    {
+      "id": "jkommando",
+      "name": "Jagdkommando",
+      "category": "Ножи",
+      "glb": "assets/jkommando.glb",
+      "bodyEntities": [
+        "Jagdkommando_LOD0"
+      ]
+    },
+    {
+      "id": "karambit",
+      "name": "Karambit",
+      "category": "Ножи",
+      "glb": "assets/karambit.glb",
+      "bodyEntities": [
+        "Karambit_1"
+      ]
+    },
+    {
+      "id": "kukri",
+      "name": "Kukri",
+      "category": "Ножи",
+      "glb": "assets/kukri.glb",
+      "bodyEntities": [
+        "L0_LOD0_16"
+      ]
+    },
+    {
+      "id": "kunai",
+      "name": "Kunai",
+      "category": "Ножи",
+      "glb": "assets/kunai.glb",
+      "bodyEntities": [
+        "L0_LOD0_15"
+      ]
+    },
+    {
+      "id": "m9",
+      "name": "M9 Bayonet",
+      "category": "Ножи",
+      "glb": "assets/m9.glb",
+      "bodyEntities": [
+        "M9Bayonet_LOD0"
+      ]
+    },
+    {
+      "id": "mantis",
+      "name": "Mantis",
+      "category": "Ножи",
+      "glb": "assets/mantis.glb",
+      "bodyEntities": [
+        "SubMesh_0"
+      ]
+    },
+    {
+      "id": "scorpion",
+      "name": "Scorpion",
+      "category": "Ножи",
+      "glb": "assets/scorpion.glb",
+      "bodyEntities": [
+        "Scorpion_Knife"
+      ]
+    },
+    {
+      "id": "stiletto",
+      "name": "Stiletto",
+      "category": "Ножи",
+      "glb": "assets/stiletto.glb",
+      "bodyEntities": [
+        "Stiletto"
+      ]
+    },
+    {
+      "id": "sting",
+      "name": "Sting",
+      "category": "Ножи",
+      "glb": "assets/sting.glb",
+      "bodyEntities": [
+        "L0_LOD0_17"
+      ]
+    },
+    {
+      "id": "tanto",
+      "name": "Tanto",
+      "category": "Ножи",
+      "glb": "assets/tanto.glb",
+      "bodyEntities": [
+        "Tanto_1"
+      ]
+    },
+    {
+      "id": "flash",
+      "name": "Flashbang",
+      "category": "Гранаты",
+      "glb": "assets/flash.glb",
+      "bodyEntities": [
+        "LOD0_Mono"
+      ]
+    },
+    {
+      "id": "he",
+      "name": "HE Grenade",
+      "category": "Гранаты",
+      "glb": "assets/he.glb",
+      "bodyEntities": [
+        "LOD0_Mono.001"
+      ]
+    },
+    {
+      "id": "molotov",
+      "name": "Molotov",
+      "category": "Гранаты",
+      "glb": "assets/molotov.glb",
+      "bodyEntities": [
+        "Magazine2",
+        "Magazine3",
+        "LOD0_Template"
+      ]
+    },
+    {
+      "id": "smoke",
+      "name": "Smoke Grenade",
+      "category": "Гранаты",
+      "glb": "assets/smoke.glb",
+      "bodyEntities": [
+        "LOD0_Mono"
+      ]
+    }
+  ]
+}

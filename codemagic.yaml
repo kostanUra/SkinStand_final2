@@ -1,15 +1,19 @@
 workflows:
   android-build:
     name: Android APK Build
-    instance_type: mac_mini_m2
+    instance_type: linux_x2
     max_build_duration: 60
     environment:
-      flutter: stable
+      flutter: 3.44.0
     scripts:
       - name: Generate Android project files
         script: flutter create . --project-name=skinstand --platforms=android
       - name: Get dependencies
         script: flutter pub get
+      - name: Analyze
+        script: flutter analyze
+      - name: Test
+        script: flutter test
       - name: Build APK
         script: flutter build apk --debug
     artifacts:
