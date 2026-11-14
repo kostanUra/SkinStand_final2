@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle; 
 import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'dart:convert';
 import 'package:interactive_3d/interactive_3d.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,10 +41,10 @@ class CreatorScreen extends StatefulWidget {
 class _CreatorScreenState extends State<CreatorScreen> {
   final Interactive3dController _controller = Interactive3dController();
   final TextEditingController _tagController = TextEditingController(); 
+  final GlobalKey _repaintKey = GlobalKey(); // Для скриншота
 
-  // ВНИМАТЕЛЬНО ПРОВЕРЬ ЭТОТ СПИСОК. Каждая строка в кавычках и с запятой на конце!
   final List<String> allModels = [
-    'assets/akr.glb',
+   'assets/akr.glb',
     'assets/deagle.glb',
     'assets/dualdaggers.glb',
     'assets/fabm.glb',
@@ -89,6 +92,7 @@ class _CreatorScreenState extends State<CreatorScreen> {
     'assets/usp.glb',
     'assets/val.glb',
   ];
+  ];
 
   late String _currentModel;
 
@@ -98,74 +102,127 @@ class _CreatorScreenState extends State<CreatorScreen> {
     _currentModel = allModels.first;
   }
 
+  // --- МОЗГ ИГРЫ: ТЕГИ ---
   Future<void> applyTag(String tag) async {
     String cleanTag = tag.trim().toLowerCase();
     if (cleanTag.isEmpty) return;
 
     ByteData? imageData;
-
+    // Пытаемся загрузить картинку. Если теги не работают, скорее всего проблема в имени файла.
     try {
       imageData = await rootBundle.load('assets/tags/$cleanTag.jpg');
     } catch (e) {
       try {
         imageData = await rootBundle.load('assets/tags/$cleanTag.png');
-      } catch (e) {}
+      } catch (e) {
+        // Если файла нет, покажем ошибку
+      }
     }
 
     if (imageData != null) {
       Uint8List bytes = imageData.buffer.asUint8List();
       
+      // ВАЖНО: Если теги не применяются, значит материал в твоих .glb файлах называется не 'Material'
+      // Попробуй поменять 'Material' на 'DefaultMaterial', 'Base' или 'Mat'
       _controller.setEntityTexture(name: 'Material', bytes: bytes);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Тег "$cleanTag" применен к скину!'), backgroundColor: Colors.green),
+          SnackBar(content: Text('Тег "$cleanTag" применен!'), backgroundColor: Colors.green),
         );
       }
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Картинка для тега "$cleanTag" не найдена!'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Файл assets/tags/$cleanTag.jpg не найден!'), backgroundColor: Colors.red),
         );
       }
     }
+  }
+
+  // --- КИСТЬ (2D ХОЛСТ) ---
+  void openBrush() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => DrawingPad(onSave: (bytes) {
+        // Когда игрок нарисовал, натягиваем его рисунок на 3D-модель
+        _controller.setEntityTexture(name: 'Material', bytes: bytes);
+      })),
+    );
+  }
+
+  // --- ГАЛЕРЕЯ ---
+  Future<void> publishSkin() async {
+    try {
+      // Делаем скриншот 3D-модели
+      final boundary = _repaintKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      final image = await boundary.toImage(pixelRatio: 2.0);
+      final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      final bytes = byteData!.buffer.asUint8List();
+      
+      // Переводим в Base64 строку для сохранения
+      String base64Image = base64Encode(bytes);
+      // Сохраняем в память телефона
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      List<String> savedSkins = prefs.getStringList('my_skins') ?? [];
+      savedSkins.add(base64Image);
+      await prefs.setStringList('my_skins', savedSkins);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Скин сохранен в галерею!'), backgroundColor: Colors.green),
+        );
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void openGallery() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const GalleryScreen()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('КРЕАТОР СКИНОВ'),
+        title: const Text('КРЕАТОР'),
         centerTitle: true,
+        actions: [
+          IconButton(icon: const Icon(Icons.photo_library), onPressed: openGallery), // Кнопка галереи
+        ],
       ),
       body: Column(
         children: [
           Expanded(
             flex: 3,
-            child: Container(
-              color: Colors.white,
-              child: Interactive3d(
-                key: ValueKey(_currentModel), 
-                controller: _controller,
-                modelPath: _currentModel,
+            child: RepaintBoundary( // Обертка для скриншота
+              key: _repaintKey,
+              child: Container(
+                color: Colors.white,
+                child: Interactive3d(
+                  key: ValueKey(_currentModel), 
+                  controller: _controller,
+                  modelPath: _currentModel,
+                ),
               ),
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(16.0),
-            decoration: const BoxDecoration(
-              color: Color(0xFF222222),
-              border: Border(top: BorderSide(color: Colors.black54, width: 2)),
-            ),
+            padding: const EdgeInsets.all(12.0),
+            color: const Color(0xFF222222),
             child: Column(
               children: [
+                // Выбор модели
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
                     color: const Color(0xFF333333),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.grey.shade700),
-                    ),
+                  ),
                   child: DropdownButton<String>(
                     value: _currentModel,
                     isExpanded: true,
@@ -176,7 +233,7 @@ class _CreatorScreenState extends State<CreatorScreen> {
                       String displayName = modelPath.replaceAll('assets/', '').replaceAll('.glb', '').toUpperCase();
                       return DropdownMenuItem<String>(
                         value: modelPath,
-                        child: Text(displayName, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        child: Text(displayName, style: const TextStyle(color: Colors.white)),
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
@@ -187,6 +244,8 @@ class _CreatorScreenState extends State<CreatorScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
+                
+                // Теги
                 Row(
                   children: [
                     Expanded(
@@ -200,45 +259,36 @@ class _CreatorScreenState extends State<CreatorScreen> {
                           filled: true,
                           fillColor: const Color(0xFF333333),
                           contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide.none,
-                          ),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
                         ),
-                      ),
+                        ),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      flex: 1,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
-                          minimumSize: const Size.fromHeight(48),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        ),
-                        onPressed: () {
-                          applyTag(_tagController.text);
-                        },
-                        child: const Text('ТЕГ', style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
+                    const SizedBox(width: 8),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                      onPressed: () => applyTag(_tagController.text),
+                      child: const Text('ТЕГ'),
+                    ),
+                    const SizedBox(width: 8),
+                    // Кнопка Кисти
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.blueAccent),
+                      onPressed: openBrush,
+                      child: const Icon(Icons.brush, color: Colors.white),
                     ),
                   ],
                 ),
                 const SizedBox(height: 10),
+                
+                // Кнопка сохранения
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange, 
                     foregroundColor: Colors.black,
-                    minimumSize: const Size.fromHeight(55),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    minimumSize: const Size.fromHeight(50),
                   ),
-                  onPressed: () {
-                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Скин сохранен!', style: TextStyle(color: Colors.white)), backgroundColor: Colors.orange),
-                    );
-                  },
-                  child: const Text('ВЫЛОЖИТЬ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
+                  onPressed: publishSkin,
+                  child: const Text('ВЫЛОЖИТЬ В ГАЛЕРЕЮ', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
@@ -247,5 +297,171 @@ class _CreatorScreenState extends State<CreatorScreen> {
       ),
     );
   }
+}
+
+// --- ЭКРАН ГАЛЕРЕИ ---
+class GalleryScreen extends StatefulWidget {
+  const GalleryScreen({super.key});
+  @override
+  State<GalleryScreen> createState() => _GalleryScreenState();
+}
+
+class _GalleryScreenState extends State<GalleryScreen> {
+  List<String> _skins = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSkins();
+  }
+
+  Future<void> _loadSkins() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _skins = prefs.getStringList('my_skins') ?? [];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('МОИ СКИНЫ')),
+      body: _skins.isEmpty 
+        ? const Center(child: Text('Галерея пуста. Создай первый скин!', style: TextStyle(color: Colors.grey)))
+        : GridView.builder(
+            padding: const EdgeInsets.all(10),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+            ),
+            itemCount: _skins.length,
+            itemBuilder: (context, index) {
+              return Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.orange, width: 2),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+                child: Image.memory(base64Decode(_skins[index]), fit: BoxFit.contain),
+              );
+            },
+          ),
+    );
+  }
+}
+
+// --- ЭКРАН КИСТИ (2D РИСОВАНИЕ) ---
+class DrawingPad extends StatefulWidget {
+  final Function(Uint8List) onSave;
+  const DrawingPad({super.key, required this.onSave});
+
+  @override
+  State<DrawingPad> createState() => _DrawingPadState();
+}
+
+class _DrawingPadState extends State<DrawingPad> {
+  List<Offset> _points = [];
+  Color _brushColor = Colors.red;
+  final GlobalKey _canvasKey = GlobalKey();
+
+  Future<void> _saveDrawing() async {
+    try {
+      RenderRepaintBoundary boundary = _canvasKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      ui.Image image = await boundary.toImage(pixelRatio: 1.0);
+      ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      
+      if (byteData != null) {
+        widget.onSave(byteData.buffer.asUint8List());
+        Navigator.pop(context); // Закрываем холст
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('КИСТЬ'),
+        actions: [
+          IconButton(icon: const Icon(Icons.save, color: Colors.green), onPressed: _saveDrawing),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: RepaintBoundary(
+              key: _canvasKey,
+              child: Container(
+                color: Colors.white, // Белый фон для текстуры
+                child: GestureDetector(
+                  onPanUpdate: (details) {
+                    setState(() {
+                      RenderBox renderBox = context.findRenderObject() as RenderBox;
+                      _points.add(renderBox.globalToLocal(details.globalPosition));
+                    });
+                  },
+                  onPanEnd: (details) => setState(() => _points.add(Offset.zero)),
+                  child: CustomPaint(
+                    painter: SignaturePainter(_points, _brushColor),
+                    size: Size.infinite,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(10),
+            color: Colors.black,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                for (var color in [Colors.red, Colors.blue, Colors.green, Colors.orange, Colors.black])
+                  GestureDetector(
+                    onTap: () => setState(() => _brushColor = color),
+                    child: Container(
+                      width: 40, height: 40,
+                      decoration: BoxDecoration(
+                        color: color, 
+                        shape: BoxShape.circle,
+                        border: Border.all(color: _brushColor == color ? Colors.white : Colors.transparent, width: 3)
+                      ),
+                    ),
+                  ),
+                IconButton(
+                  icon: const Icon(Icons.clear, color: Colors.white),
+                  onPressed: () => setState(() => _points.clear()),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class SignaturePainter extends CustomPainter {
+  final List<Offset> points;
+  final Color color;
+  SignaturePainter(this.points, this.color);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = color
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 15.0; // Толщина кисти
+
+    for (int i = 0; i < points.length - 1; i++) {
+      if (points[i] != Offset.zero && points[i + 1] != Offset.zero) {
+        canvas.drawLine(points[i], points[i + 1], paint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(SignaturePainter oldDelegate) => oldDelegate.points != points;
 }
                     
